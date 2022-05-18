@@ -271,8 +271,8 @@ report = dp.Report(
                 ),
                 dp.Divider(),
                 dp.Text("# Most starred"),
-                dp.Text("""Dataframe f most starred user's repositories."""),
-                dp.Table(repos_df.sort_values('stargazers', ascending=False).iloc[:3]),
+                dp.Text("""Dataframe of most starred user's repositories."""),
+                dp.DataTable(repos_df.sort_values('stargazers', ascending=False), caption="User repositories"),
             ],
             title="Repositories"
         ),
