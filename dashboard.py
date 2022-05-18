@@ -10,6 +10,7 @@ from github import Github, UnknownObjectException
 # get token
 load_dotenv()
 token = os.environ.get("GITHUB_API_TOKEN")
+dp_token = os.environ.get("DATAPANE_TOKEN")
 
 # get user profile data
 username = 'clissa'
@@ -280,3 +281,8 @@ report = dp.Report(
 )
 report.save(path='report.html',
             open=True)  # , formatting=dp.ReportFormatting(bg_color='#B1BEBA', accent_color='#297373'))
+
+# upload report
+dp.login(token=dp_token)
+report.upload(name="GitHub user dashboard", #project='github_dashboard',
+              description='Mock-up dashboard of GitHub profile data and activity.', publicly_visible=True)
