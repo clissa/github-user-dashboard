@@ -7,20 +7,22 @@ import pandas as pd
 from dotenv import load_dotenv
 from github import Github, UnknownObjectException
 
+# get token
 load_dotenv()
 token = os.environ.get("GITHUB_API_TOKEN")
 
+# get user profile data
 username = 'clissa'
-
 gh = Github(token)
-
 user = gh.get_user(username)
 
+# initialize empty dataframe for repos data
 colnames = ['languages', 'topics', 'description', 'commits', 'collaborators', 'forks', 'stargazers', 'open_issues',
             'visibility', 'license']
 repos_df = pd.DataFrame(data={}, columns=colnames)
 repos_df.index.name = 'repository'
 
+# loop through repos to get infos
 for repo in user.get_repos():
     try:
         license = repo.get_license().raw_data['license']['name']
@@ -89,14 +91,18 @@ def get_repo_insights(name: str, gh: Github = gh) -> (pd.DataFrame, pd.DataFrame
             contributions_df.loc[contributions_df.shape[0]] = [stats.author.login, stats.total, activity.w, activity.c]
     return repo_languages_pct, contributions_df
 
-
+# user-defined collaborative projects
+#TODO: change from hard-coded to interactive (e.g. CLI args?)
 repo_names = ['robomorelli/cell_counting_yellow', 'operationalintelligence/opint-framework']
+
+# intitialize dictionary with plots for each collaborative project section
 repo_sections = {}
 time_periods = {
     'robomorelli/cell_counting_yellow': pd.to_datetime(['2020-11-01', '2021-12-31']).astype(int) / 10 ** 6,
     'operationalintelligence/opint-framework': pd.to_datetime(['2019-07-01', '2020-06-30']).astype(int) / 10 ** 6,
 }
 
+# populate each section with 3 plots
 for name in repo_names:
     source_languages, source_contributors = get_repo_insights(name, gh)
 
