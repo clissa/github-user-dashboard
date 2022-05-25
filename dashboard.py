@@ -36,7 +36,7 @@ for repo in user.get_repos():
 
 # highlights tab
 received_stars = repos_df.stargazers.sum()
-
+PREV_FOLLOWS = 4
 
 # languages tab
 def get_languages_pct(repo_languages: dict) -> dict:
@@ -189,8 +189,8 @@ report = dp.Report(
                                         dp.BigNumber(
                                             heading="Followers",
                                             value=user.followers,
-                                            prev_value=4,
-                                            change="25%",
+                                            prev_value=PREV_FOLLOWS,
+                                            change=f"{(user.followers - PREV_FOLLOWS) / PREV_FOLLOWS * 100:4.1f}%",
                                             is_upward_change=True,
                                             label='Last week'
                                         ),
